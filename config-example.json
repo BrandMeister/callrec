@@ -1,0 +1,18 @@
+{
+	"serverHost": "brandmeister.hu",
+	"serverPort": 54005,
+	"serverPassword": "",
+	"serverTimeoutSeconds": 12,
+	"appID": 1234,
+	"recTalkgroupID": 216,
+	"callHangTimeSeconds": 3,
+	"callExecCommand1": "",
+	"callExecCommand1ShowStderr": false,
+	"callExecCommand2": "",
+	"callExecCommand2ShowStderr": false,
+	"callExecCommand3": "",
+	"callExecCommand3ShowStderr": false,
+	"outputDir": "",
+	"outputFileExtension": "ambe",
+	"createDailyAggregateFile": true
+}
