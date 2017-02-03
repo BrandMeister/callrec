@@ -32,8 +32,9 @@ var callData struct {
 }
 
 func createCallFile() {
-	outdir := filepath.Clean(settings.OutputDir) + "/" + fmt.Sprintf("%d/%d/%02d",
-		callData.lastSuperHeader.DstID, callData.startedAt.Year(), callData.startedAt.Month())
+	outdir := filepath.Clean(settings.OutputDir) + "/" + fmt.Sprintf("%d/%d/%02d/%02d",
+		callData.lastSuperHeader.DstID, callData.startedAt.Year(), callData.startedAt.Month(),
+		callData.startedAt.Day())
 	os.MkdirAll(outdir, 0777)
 	callData.fileName = outdir + "/" + fmt.Sprintf("%02d%02d%02d-%d.%s",
 		callData.startedAt.Hour(), callData.startedAt.Minute(), callData.startedAt.Second(),
