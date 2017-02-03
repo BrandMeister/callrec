@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"log"
@@ -53,7 +54,7 @@ func logCall(event string) {
 	}
 	log.Printf("%s call %s, dst: %d src: %d (%s)", callTypeStr, event,
 		callData.lastSuperHeader.DstID, callData.lastSuperHeader.SrcID,
-		callData.lastSuperHeader.SrcCall)
+		string(bytes.Trim(callData.lastSuperHeader.SrcCall[:], "\x00")))
 }
 
 func handleCallStart(sh rewindSuperHeader) {
