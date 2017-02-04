@@ -37,9 +37,13 @@ func createCallFile() {
 		callData.lastSuperHeader.DstID, callData.startedAt.Year(), callData.startedAt.Month(),
 		callData.startedAt.Day())
 	os.MkdirAll(outdir, 0777)
-	callData.fileName = outdir + "/" + fmt.Sprintf("%02d%02d%02d-%d.%s",
+	srcCallsign := string(bytes.Trim(callData.lastSuperHeader.SrcCall[:], "\x00"))
+	if len(srcCallsign) > 0 {
+		srcCallsign = "-" + strings.ToLower(srcCallsign)
+	}
+	callData.fileName = outdir + "/" + fmt.Sprintf("%02d%02d%02d-%d%s.%s",
 		callData.startedAt.Hour(), callData.startedAt.Minute(), callData.startedAt.Second(),
-		callData.lastSuperHeader.SrcID, settings.OutputFileExtension)
+		callData.lastSuperHeader.SrcID, srcCallsign, settings.OutputFileExtension)
 	var err error
 	callData.outFile, err = os.Create(callData.fileName)
 	if err != nil {
