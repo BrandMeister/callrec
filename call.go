@@ -61,6 +61,14 @@ func logCall(event string) {
 		string(bytes.Trim(callData.lastSuperHeader.SrcCall[:], "\x00")))
 }
 
+func replaceCommandVariables(command string, sh rewindSuperHeader) string {
+	command = strings.ReplaceAll(command, "$SRCCALL", string(bytes.Trim(sh.SrcCall[:], "\x00")))
+	command = strings.ReplaceAll(command, "$SRCID", fmt.Sprintf("%d", sh.SrcID))
+	command = strings.ReplaceAll(command, "$DSTCALL", string(bytes.Trim(sh.DstCall[:], "\x00")))
+	command = strings.ReplaceAll(command, "$DSTID", fmt.Sprintf("%d", sh.DstID))
+	return command
+}
+
 func handleCallStart(sh rewindSuperHeader) {
 	callData.lastSuperHeader = sh
 	callData.startedAt = time.Now()
@@ -72,7 +80,7 @@ func handleCallStart(sh rewindSuperHeader) {
 	createCallFile()
 
 	if len(settings.CallExecCommand1) > 0 {
-		cp := strings.Split(settings.CallExecCommand1, " ")
+		cp := strings.Split(replaceCommandVariables(settings.CallExecCommand1, sh), " ")
 		callData.cmd1 = exec.Command(cp[0], cp[1:]...)
 
 		var err error
@@ -88,7 +96,7 @@ func handleCallStart(sh rewindSuperHeader) {
 		}
 
 		if len(settings.CallExecCommand2) > 0 {
-			cp = strings.Split(settings.CallExecCommand2, " ")
+			cp = strings.Split(replaceCommandVariables(settings.CallExecCommand2, sh), " ")
 			callData.cmd2 = exec.Command(cp[0], cp[1:]...)
 
 			// Linking cmd1's stdout to cmd2's stdin
@@ -105,7 +113,7 @@ func handleCallStart(sh rewindSuperHeader) {
 			}
 
 			if len(settings.CallExecCommand3) > 0 {
-				cp = strings.Split(settings.CallExecCommand3, " ")
+				cp = strings.Split(replaceCommandVariables(settings.CallExecCommand3, sh), " ")
 				callData.cmd3 = exec.Command(cp[0], cp[1:]...)
 
 				// Linking cmd2's stdout to cmd3's stdin
