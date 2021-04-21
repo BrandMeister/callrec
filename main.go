@@ -18,6 +18,7 @@ var settings struct {
 	ServerHost                 string
 	ServerPort                 uint16
 	ServerPassword             string
+	SourceAddress              string
 	AppID                      uint32
 	ServerTimeoutSeconds       int
 	RecTalkgroupID             uint32
@@ -142,7 +143,20 @@ func main() {
 
 	serverHostPort := fmt.Sprintf("%s:%d", settings.ServerHost, settings.ServerPort)
 	log.Println("using server and port", serverHostPort)
-	conn, err := net.Dial("udp", serverHostPort)
+	raddr, err := net.ResolveUDPAddr("udp", serverHostPort)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var laddr *net.UDPAddr
+	if (settings.SourceAddress != "") {
+		log.Println("Using custom listening address " + settings.SourceAddress)
+		laddr, err = net.ResolveUDPAddr("udp", settings.SourceAddress)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	conn, err := net.DialUDP("udp", laddr, raddr)
 	if err != nil {
 		log.Fatal(err)
 	}
