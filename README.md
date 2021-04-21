@@ -25,3 +25,8 @@ The strings `$SRCID`, `$DSTID`, `$SRCCALL` and `$DSTCALL` in the
 
 Note that every time a new call starts, a new process gets created. When the call ends,
 the processes started by `callExecCommand` get their stdin closed and need to stop.
+
+In some cases (for example when UDP hole punching is not enabled on the firewall), it
+might be useful to have a fixed listening port instead of randomly picking one. You can
+do this by setting `sourceAddress` to for example `:1234`: then port 1234 will be used
+as the local listening port.

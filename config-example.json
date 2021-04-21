@@ -1,6 +1,7 @@
 {
 	"serverHost": "brandmeister.hu",
 	"serverPort": 54005,
+	"sourceAddress": "",
 	"serverPassword": "",
 	"serverTimeoutSeconds": 12,
 	"appID": 1234,
